@@ -2,6 +2,13 @@ Flask==3.0.3
 Flask-Bcrypt==1.0.1
 Flask-Login==0.6.3
 Flask-SQLAlchemy==3.1.1
-gunicorn==23.0.0
 SQLAlchemy==2.0.43
-...
+Werkzeug==3.0.3
+Jinja2==3.1.6
+itsdangerous==2.2.0
+click==8.1.7
+blinker==1.9.0
+bcrypt==5.0.0
+greenlet==3.2.4
+typing-extensions==4.15.0
+gunicorn==23.0.0
