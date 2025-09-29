@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Gerir - Sistema W.B.O.</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Gerir - Sistema W.B.O.</div>
+  <nav>
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('home') }}">Início</a>
+      <a href="{{ url_for('users_list') }}">Usuários</a>
+      <a href="{{ url_for('entregas_list') }}">Entregas</a>
+      <a href="{{ url_for('agenda_list') }}">Agenda</a>
+      {% if current_user.role == 'ENTREGADOR' %}
+        <a href="{{ url_for('profile') }}">Meu Perfil</a>
+      {% endif %}
+      <a href="{{ url_for('logout') }}">Sair</a>
+    {% endif %}
+    <button id="themeToggle" class="btn" type="button">🌙</button>
+  </nav>
+</header>
+
+
+<main class="container">
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% if msgs %}
+      <div class="flash-wrap">
+        {% for cat, msg in msgs %}
+          <div class="flash {{cat}}">{{ msg }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+
+<script>
+  const toggleBtn = document.getElementById("themeToggle");
+  const body = document.body;
+
+  // Mantém escolha salva
+  if (localStorage.getItem("theme") === "light") {
+    body.classList.add("light-mode");
+    toggleBtn.textContent = "☀️";
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    body.classList.toggle("light-mode");
+    if (body.classList.contains("light-mode")) {
+      localStorage.setItem("theme", "light");
+      toggleBtn.textContent = "☀️";
+    } else {
+      localStorage.setItem("theme", "dark");
+      toggleBtn.textContent = "🌙";
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex-row">
+  <h2>Detalhes do Usuário</h2>
+  <a class="btn" href="{{ url_for('users_list') }}">Voltar</a>
+</div>
+
+<div class="card" style="max-width:600px;margin:auto;">
+  {% if user.foto %}
+    <div style="text-align:center;">
+      <img src="{{ url_for('uploaded_file', filename=user.foto) }}" 
+           alt="Foto do usuário" 
+           style="max-width:180px;border-radius:50%;margin-bottom:16px;">
+    </div>
+  {% endif %}
+  <p><b>ID:</b> {{ user.id }}</p>
+  <p><b>Nome:</b> {{ user.nome }}</p>
+  <p><b>Email:</b> {{ user.email }}</p>
+  <p><b>CPF:</b> {{ user.cpf }}</p>
+  <p><b>Telefone:</b> {{ user.telefone }}</p>
+  <p><b>Data de Nascimento:</b> {{ user.data_nascimento }}</p>
+  <p><b>Estado Civil:</b> {{ user.estado_civil }}</p>
+  <p><b>Endereço:</b> {{ user.endereco }}, {{ user.cidade }} - {{ user.estado }}, CEP: {{ user.cep }}</p>
+  <p><b>Papel:</b> {{ user.role }}</p>
+  <p><b>Data de Cadastro:</b> {{ user.criado_em.strftime('%d/%m/%Y %H:%M') if user.criado_em else '-' }}</p>
+</div>
+{% endblock %}

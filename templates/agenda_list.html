@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex-row">
+  <h2>Agenda de Trabalho</h2>
+</div>
+
+
+<div class="card">
+  <h3>Novo Registro</h3>
+  <form method="post" action="{{ url_for('agenda_new') }}" class="grid-form">
+    {% if current_user.role in ['ADMIN','OL'] %}
+      <label>Entregador
+        <select name="entregador_id" required>
+          {% for u in (entregadores or []) %}
+            <option value="{{ u.id }}">{{ u.nome }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    {% endif %}
+    <label>Dia<input type="date" name="dia" required></label>
+    <label>Início<input type="time" name="hora_inicio" required></label>
+    <label>Fim<input type="time" name="hora_fim" required></label>
+    <label>Região<input name="regiao" placeholder="Ex: Asa Norte / Taguatinga" required></label>
+    <label>Status
+      <select name="status" required>
+        <option value="ativo" selected>Ativo</option>
+        <option value="inativo">Inativo</option>
+      </select>
+    </label>
+    <div class="actions">
+      <button type="submit">Salvar</button>
+    </div>
+  </form>
+</div>
+
+
+
+<div class="card">
+  <h3>Filtros</h3>
+  <form method="get" action="{{ url_for('agenda_list') }}" class="grid-form">
+    <label>ID
+      <input type="text" name="id" placeholder="ID" value="{{ request.args.get('id','') }}">
+    </label>
+    <label>Nome
+      <input type="text" name="nome" placeholder="Nome" value="{{ request.args.get('nome','') }}">
+    </label>
+    <label>Status
+      <select name="status">
+        <option value="">-- Todos --</option>
+        <option value="ativo" {% if request.args.get('status')=='ativo' %}selected{% endif %}>Ativo</option>
+        <option value="inativo" {% if request.args.get('status')=='inativo' %}selected{% endif %}>Inativo</option>
+      </select>
+    </label>
+    <label>Data
+      <input type="date" name="data" value="{{ request.args.get('data','') }}">
+    </label>
+    <div class="actions">
+      <button type="submit">Filtrar</button>
+    </div>
+  </form>
+</div>
+
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Dia</th>
+      <th>Entregador</th>
+      <th>Início</th>
+      <th>Fim</th>
+      <th>Região</th>
+      <th>Status</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for a in agendas %}
+      <tr>
+        <td>{{ a.id }}</td>
+        <td>{{ a.dia.strftime('%d/%m/%Y') }}</td>
+        <td>{{ a.entregador.nome }}</td>
+        <td>{{ a.hora_inicio.strftime('%H:%M') }}</td>
+        <td>{{ a.hora_fim.strftime('%H:%M') }}</td>
+        <td>{{ a.regiao }}</td>
+        <td>
+          <form method="post" action="{{ url_for('agenda_toggle', agenda_id=a.id) }}">
+            {% if a.status == 'ativo' %}
+              <button type="submit" class="btn">Ativo</button>
+            {% else %}
+              <button type="submit" class="btn btn-danger">Inativo</button>
+            {% endif %}
+          </form>
+        </td>
+        <td>
+          <form method="post" action="{{ url_for('agenda_delete', agenda_id=a.id) }}" 
+                onsubmit="return confirm('Remover item?')">
+            <button class="link-danger" type="submit">Excluir</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

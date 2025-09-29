@@ -1,0 +1,50 @@
+Como rodar
+# 1) criar venv
+python -m venv .venv
+# 2) ativar
+# Windows:
+.venv\Scripts\activate
+
+# 3) instalar dependências
+pip install -r requirements.txt
+
+# 4) inicializar banco e admin padrão
+flask --app app.py init-db
+
+# 5) rodar
+flask --app app.py run
+# abrir http://127.0.0.1:5000
+
+# 6) reiniciar banco de dados do zero
+flask --app app.py init-db
+
+# 7) logar como admin
+Admin padrão: admin@gerir.local / admin123 (troque em produção!)
+
+
+Regras de permissão implementadas (conforme seu item 4–7)
+
+Administrador (ADMIN): cadastra/edita/atualiza/exclui qualquer OL ou Entregador; visão total; dashboard com KPIs.
+
+Operador Logístico (OL): cadastra/edita/atualiza/exclui apenas ENTREGADORES; vê listas e dados dos entregadores e suas entregas/agenda.
+
+Entregador (ENTREGADOR): vê seu painel, suas entregas (com total a receber), seu perfil (envio de documentos, atualização de dados pessoais limitados, redefinição da própria senha), e sua agenda (dias/horas/região). Pode lançar entrega para si (ou isso pode ser feito por OL/Admin).
+
+
+Próximos incrementos (se quiser ampliar)
+
+Validação de CPF e CEP.
+
+Máscaras de input (JS).
+
+Filtro por período/estado das entregas, exportação CSV/PDF.
+
+Calendário visual (FullCalendar) para a agenda.
+
+Logs/auditoria de alterações.
+
+Paginação e busca (DataTables).
+
+CSRF com Flask-WTF.
+
+Anexos de documentos em entidades separadas (tabela documentos).

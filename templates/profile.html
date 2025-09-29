@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Meu Perfil</h2>
+<div class="card">
+  <p><b>Nome:</b> {{ user.nome }}</p>
+  <p><b>Email:</b> {{ user.email }}</p>
+  <p><b>CPF:</b> {{ user.cpf }}</p>
+  <p><b>Endereço:</b> {{ user.endereco }} — {{ user.cidade }}/{{ user.estado }} ({{ user.cep }})</p>
+  {% if user.foto %}
+    <p><img src="{{ url_for('uploaded_file', filename=user.foto) }}" alt="foto" style="max-width:160px;border-radius:8px;"></p>
+  {% endif %}
+</div>
+
+<h3>Atualizar dados / Enviar documentos / Redefinir senha</h3>
+<form method="post" enctype="multipart/form-data" class="grid-form">
+  <label>Telefone<input name="telefone" value="{{ user.telefone or '' }}"></label>
+  <label>Estado<input name="estado" value="{{ user.estado or '' }}"></label>
+  <label>Cidade<input name="cidade" value="{{ user.cidade or '' }}"></label>
+  <label>Endereço<input name="endereco" value="{{ user.endereco or '' }}"></label>
+  <label>CEP<input name="cep" value="{{ user.cep or '' }}"></label>
+
+  <label>Documentos (múltiplos)
+    <input type="file" name="documentos" multiple>
+  </label>
+
+  <label>Nova senha
+    <input type="password" name="nova_senha" placeholder="Opcional">
+  </label>
+
+  <div class="actions">
+    <button type="submit">Salvar</button>
+  </div>
+</form>
+
+{% if docs %}
+<h4>Meus documentos</h4>
+<ul>
+  {% for d in docs %}
+    <li><a href="{{ url_for('uploaded_file', filename=d) }}" target="_blank">{{ d }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+gerir/
+├─ app.py
+├─ requirements.txt
+├─ instance/
+│  └─ gerir.db         (criado automaticamente no 1º run)
+├─ uploads/            (será criada se não existir)
+├─ templates/
+│  ├─ base.html
+│  ├─ login.html
+│  ├─ dashboard_admin.html
+│  ├─ dashboard_ol.html
+│  ├─ dashboard_entregador.html
+│  ├─ users_list.html
+│  ├─ user_form.html
+│  ├─ profile.html
+│  ├─ entregas_list.html
+│  └─ agenda_list.html
+└─ static/
+   └─ styles.css
+
+
+pip install Flask Flask-SQLAlchemy Flask-Login Flask-Bcrypt

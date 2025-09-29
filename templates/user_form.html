@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ 'Editar' if user else 'Novo' }} Usuário</h2>
+<form method="post" enctype="multipart/form-data" class="grid-form">
+  <label>Nome Completo<input name="nome" value="{{ user.nome if user }}"></label>
+  <label>CPF<input name="cpf" value="{{ user.cpf if user }}"></label>
+  <label>Telefone<input name="telefone" value="{{ user.telefone if user }}"></label>
+  <label>Email<input type="email" name="email" value="{{ user.email if user }}"></label>
+  <label>Data de Nascimento<input name="data_nascimento" placeholder="dd/mm/aaaa" value="{{ user.data_nascimento if user }}"></label>
+
+  <label>Estado Civil
+    <select name="estado_civil" required>
+      <option value="Casado(a)" {% if user and user.estado_civil == 'Casado(a)' %}selected{% endif %}>Casado(a)</option>
+      <option value="Solteiro(a)" {% if user and user.estado_civil == 'Solteiro(a)' %}selected{% endif %}>Solteiro(a)</option>
+    </select>
+  </label>
+
+  <label>Estado (UF)<input name="estado" value="{{ user.estado if user }}"></label>
+  <label>Cidade<input name="cidade" value="{{ user.cidade if user }}"></label>
+  <label>Endereço<input name="endereco" value="{{ user.endereco if user }}"></label>
+  <label>CEP<input name="cep" value="{{ user.cep if user }}"></label>
+
+  {% if current_user.role == 'ADMIN' %}
+  <label>Papel
+    <select name="role">
+      {% for r in roles %}
+        <option value="{{ r }}" {% if user and user.role==r %}selected{% endif %}>{{ r }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  {% elif current_user.role == 'OL' %}
+  <input type="hidden" name="role" value="ENTREGADOR">
+  {% endif %}
+
+  <label>Foto<input type="file" name="foto" accept="image/*"></label>
+
+  <label>Senha (deixe em branco para manter) <input type="password" name="senha"></label>
+
+  <div class="actions">
+    <button type="submit">Salvar</button>
+    <a class="btn" href="{{ url_for('users_list') }}">Voltar</a>
+  </div>
+</form>
+{% endblock %}

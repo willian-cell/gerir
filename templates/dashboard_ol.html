@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Dashboard — Operador Logístico</h2>
+<div class="grid">
+  <div class="card kpi">Entregadores: <b>{{ total_entregadores }}</b></div>
+  <div class="card kpi">Entregas: <b>{{ total_entregas }}</b></div>
+  <div class="card kpi">Concluídas: <b>{{ concluidas }}</b></div>
+  <div class="card kpi">Pendentes: <b>{{ pendentes }}</b></div>
+</div>
+{% endblock %}

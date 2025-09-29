@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Dashboard — Administrador</h2>
+<div class="grid">
+  <div class="card kpi">Usuários: <b>{{ total_users }}</b></div>
+  <div class="card kpi">Operadores Logísticos: <b>{{ total_ol }}</b></div>
+  <div class="card kpi">Entregadores: <b>{{ total_entregadores }}</b></div>
+  <div class="card kpi">Entregas: <b>{{ total_entregas }}</b></div>
+  <div class="card kpi">Total a Receber (Concluídas): <b>R$ {{ '%.2f'|format(total_receber) }}</b></div>
+</div>
+{% endblock %}

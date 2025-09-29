@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex-row">
+  <h2>Entregas</h2>
+</div>
+
+{% if current_user.role in ['ADMIN','OL','ENTREGADOR'] %}
+<div class="card">
+  <h3>Nova Entrega</h3>
+  <form method="post" action="{{ url_for('entregas_new') }}" class="grid-form">
+    {% if current_user.role in ['ADMIN','OL'] %}
+      <label>Entregador
+        <select name="entregador_id" required>
+          {% for u in users %}
+            {% if u.role == 'ENTREGADOR' %}
+              <option value="{{ u.id }}">{{ u.nome }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </label>
+    {% endif %}
+
+
+    {% if current_user.role == 'ENTREGADOR' %}
+      <input type="hidden" name="entregador_id" value="{{ current_user.id }}">
+    {% endif %}
+
+    <label>Data
+      <input type="date" name="data" value="{{ e.data.isoformat() if e is defined else '' }}">
+    </label>
+    <label>Descrição
+      <input name="descricao" placeholder="Ex: Pedido 1234">
+    </label>
+    <label>Valor
+      <input name="valor" type="number" step="0.01" value="0.00">
+    </label>
+    <label>Status
+      <select name="status">
+        <option value="PENDENTE">PENDENTE</option>
+        <option value="CONCLUIDA">CONCLUÍDA</option>
+      </select>
+    </label>
+
+    <div class="actions">
+      <button type="submit">Lançar</button>
+    </div>
+  </form>
+</div>
+{% endif %}
+
+{% if current_user.role == 'ENTREGADOR' and total_receber is not none %}
+<div class="card" style="border-left:4px solid var(--brand)">
+  <p><b>Total a receber (concluídas):</b> R$ {{ '%.2f'|format(total_receber) }}</p>
+</div>
+{% endif %}
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Data</th>
+      <th>Entregador</th>
+      <th>Descrição</th>
+      <th>Valor</th>
+      <th>Status</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in entregas %}
+    <tr>
+      <td>{{ e.id }}</td>
+      <td>{{ e.data.strftime('%d/%m/%Y') }}</td>
+      <td>{{ e.entregador.nome }}</td>
+      <td>{{ e.descricao }}</td>
+      <td>R$ {{ '%.2f'|format(e.valor) }}</td>
+      <td>
+        {% if e.status == "CONCLUIDA" %}
+          <span class="btn" style="cursor:default;">Concluída</span>
+        {% else %}
+          <span class="btn btn-danger" style="cursor:default;">Pendente</span>
+        {% endif %}
+      </td>
+      <td class="actions">
+        <!-- Form de atualização -->
+        <form method="post" action="{{ url_for('entregas_update', entrega_id=e.id) }}" class="grid-form" style="margin-bottom:8px;">
+          <input type="date" name="data" value="{{ e.data.isoformat() }}">
+          <input name="descricao" value="{{ e.descricao }}">
+          <input name="valor" type="number" step="0.01" value="{{ '%.2f'|format(e.valor) }}">
+          <select name="status">
+            <option value="PENDENTE" {% if e.status=='PENDENTE' %}selected{% endif %}>Pendente</option>
+            <option value="CONCLUIDA" {% if e.status=='CONCLUIDA' %}selected{% endif %}>Concluída</option>
+          </select>
+          <div class="actions">
+            <button type="submit">Salvar</button>
+          </div>
+        </form>
+
+        <!-- Form de exclusão -->
+        <form method="post" action="{{ url_for('entregas_delete', entrega_id=e.id) }}" 
+              onsubmit="return confirm('Excluir entrega?')">
+          <button class="link-danger" type="submit">Excluir</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

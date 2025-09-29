@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Meu Painel — Entregador</h2>
+<div class="grid">
+  <div class="card kpi">Total: <b>{{ total }}</b></div>
+  <div class="card kpi">Concluídas: <b>{{ concluidas }}</b></div>
+  <div class="card kpi">Pendentes: <b>{{ pendentes }}</b></div>
+  <div class="card kpi">A Receber: <b>R$ {{ '%.2f'|format(total_receber) }}</b></div>
+</div>
+<p>Use o menu para visualizar Entregas, Agenda e Meu Perfil.</p>
+{% endblock %}

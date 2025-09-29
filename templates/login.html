@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="login-title">Acesso ao Sistema</h2>
+    <form method="post" class="login-form">
+      <label>
+        <span>Email</span>
+        <input type="email" name="email" placeholder="seu@email.com" required>
+      </label>
+      <label>
+        <span>Senha</span>
+        <input type="password" name="password" placeholder="********" required>
+      </label>
+      <button type="submit" class="btn-login">Entrar</button>
+    </form>
+    <p class="hint">
+      <small>Admin padrão: <code>admin@gerir.local / admin123</code></small>
+    </p>
+  </div>
+</div>
+{% endblock %}
